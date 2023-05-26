@@ -52,38 +52,3 @@ def load_list_of_dicts_to_data(header, list_dicts, file_path, file_mode, data_se
         line = line.rstrip(line[line.rfind(data_separator)]) + '\n' #retira o último separador de dados da linha e adiciona uma quebra de linha ao final da linha
         file.writelines(line) #insere a linha no arquivo
     return file # retorna o arquivo
-
-
-
-
-
-
-
-
-
-
-
-
-
-#agrupa valores de uma lista de dicionários em um dicionário utilizando duas chaves 
-def list_dict_group_by_values_two_keys(dictionary_grouped, dictionary, key_group, key_sum):
-    dictionary_grouped[dictionary[key_group]] =  dictionary_grouped.get(dictionary[key_group], 0) + dictionary[key_sum]
-    return dictionary_grouped
-
-#conta número de ocorrências de valores de uma chave em uma lista de dicionários
-def list_dict_count_values_key(dictionary_grouped, dictionary, key_group):
-    dictionary_grouped[dictionary[key_group]] =  dictionary_grouped.get(dictionary[key_group], 0) + 1
-    return dictionary_grouped
-
-def sum_column_values_whitout_conditions(list_dict, key):
-    column_values = 0
-    for dict in list_dict:
-        column_values += dict[key]
-    return column_values
-
-#converte valor float em moeda (Brasil)
-def convert_to_currency(value):
-    x = "{:,.2f}".format(float(value))
-    y = x.replace(',','x')
-    z = y.replace('.',',')
-    return z.replace('x','.')
