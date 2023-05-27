@@ -1,11 +1,11 @@
-#abre o arquivo de dados
+#abre o arquivo de dados e o divide em cabeçalho e dados
 #parâmetros:
 # - caminho do arquivo a ser aberto (file_path)
 # -modo de uso do arquivo (file_mode). Obs.: informações sobre parâmetros no arquivo INFORMATION.md
-def open_file(file_path, file_mode):
+def open_file(file_path, file_mode, data_separator):
     file = open(file_path, file_mode) #abre o arquivo no caminho informado e da forma de uso informada
     content = file.readlines() #transforma os dados do arquivo em uma lista
-    header = content[0] #atribui a primeira linha da lista como cabeçalho
+    header = content[0].replace('\n', '').split(data_separator) #atribui a primeira linha da lista como cabeçalho
     data = content[1:] #atribui as demais linhas da lista como dados a serem trabalhados
     return header, data #retorna duas listas: cabeçalho e dados
 
@@ -17,19 +17,17 @@ def open_file(file_path, file_mode):
 def load_data_to_list_of_dicts(data, dict_keys, data_separator):
     list = [] #inicializa a lista de dicionários
     for d in data: #percorre cada linha da lista de dados     
-        record = d.split(data_separator) #retira cada separador de dados e atribui a linha do arquivo a uma lista (record)
+        record = d.split(data_separator)#retira cada separador de dados e atribui a linha do arquivo a uma lista (record)
         line = {} #inicializa o dicionário que vai receber a linha lida
         position = 0 #iterador da posição do valor a ser lido na lista (record)
         for key, value in dict_keys.items(): #busca cada chave e valor existente na lista de campos (dict_keys)
-            if(value == str): #se for texto (String)
-                line.setdefault(key, value(record[position]).replace('\n','')) #retira a quebra de linha
-            elif(value == bool): #se for lógico (booleano)
+            if(value == bool): #se for lógico (booleano)
                 if(record[position][0].upper() in ('T', 'V', '1') ): #verifica se o dado inicia por T (True), V (Verdadeiro) ou 1 (Verdadeiro)
                     line.setdefault(key, True) # atribui verdadeiro
                 else: #se não encontrar este tipo de caracter
                     line.setdefault(key, False) #atribui falso
             else: #se o valor da chave da lista não for texto (String) ou lógico (booleano)  
-                line.setdefault(key, value(record[position])) #atribui chave e valor ao dicionário
+                line.setdefault(key, value(record[position].replace('\n',''))) #atribui chave e valor ao dicionário retira a quebra de linha
             position += 1 #iterar a posição do valor a ser lido na lista (record)
         list.append(line) #após atribuir todos os valores de chave e valor da linha, salva a linha na lista de dados  
     return list # retorna a lista de dados: cada linha dos dados é um dicionário na lista
@@ -44,7 +42,7 @@ def load_data_to_list_of_dicts(data, dict_keys, data_separator):
 # -separador de dados (data_separator)
 def load_list_of_dicts_to_data(header, list_dicts, file_path, file_mode, data_separator):
     file = open(file_path, file_mode) #cria o arquivo no caminho informado e seta o tipo de uso do arquivo
-    file.write(header) #insere o cabeçalho no início do arquivo
+    file.write(str(header).strip('[]').replace("'", '').replace(' ', '') + '\n') #insere o cabeçalho no início do arquivo
     for dict in list_dicts: #verifica cada dicionário da lista de dicionário
         line = '' #incializa a linha que vai receber dados do dicionário da lista de dicionários
         for value in dict.values(): #verifica cada campo e valor do dicionário da lista de dicionários
