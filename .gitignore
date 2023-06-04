@@ -1,6 +1,6 @@
 __pycache__/
 *.csv
 *.txt
-/main.py
+main.py
 *.xls
 *.xlsx
