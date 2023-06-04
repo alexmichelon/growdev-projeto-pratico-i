@@ -19,7 +19,7 @@ data_separator = ','
 ######Testes#######
 
 #salvar dados d arquivo na lista de dicionários
-header, data = load.load_datafile_to_list_of_dicts(file_path_cars, list_keys_cars, data_separator)
+header, data = load.load_datafile_to_list_of_dicts(file_path_compras, list_keys_compras, data_separator)
 #print(data)
 
 '''#salvar lista de dicionários em um arquivo
@@ -55,15 +55,15 @@ keys = ['nome', 'carro', 'valor']
 result = processing.projection_data(data, keys)
 print(f'{type_of_test}: \n {result}')'''
 
-#Atualização por índice:
+'''#Atualização por índice:
 type_of_test = 'Atualização por Índice'
 indexes = [0,3,[0,3,2]]
-update_list=[{'tempo': 'XXXXXXXXX'}, {'carro': 'ZZZZZZZZZZZZ'}]
+update_list=[{'ano': 'XXXXXXXXX'}, {'sobrenome': 'ZZZZZZZZZZZZ'}]
 data, indexes, list_data_updated, count_records_updated = processing.update_data_by_indexes(data, indexes, update_list)
 print(f'{type_of_test}:\n'
       f'Registros atualizados: {count_records_updated}\n'
       f'Índices atualizados:\n {indexes}\n' 
-      f'Resgistros atualizados:\n {list_data_updated}')
+      f'Resgistros atualizados:\n {list_data_updated}')'''
 
 
 '''#Atualização por regra:
