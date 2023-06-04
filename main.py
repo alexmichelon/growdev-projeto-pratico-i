@@ -1,15 +1,13 @@
 import model.load.load_data as load
 import model.processing.processing_data as processing
+import model.load.save_data as save
 
-#list_keys_compras = {'name': str, 'last_name': str, 'age': int, 'sex': str, 'purchase': float, 'year': int, 'payment': str}
 list_keys_compras = [str, str, int, str, float, int, str]
 file_path_compras = 'model/data/compras.csv'
 
-#list_keys_alunos = {'nome': str, 'ano': int, 'escola': str, 'nota_semestre_1': float, 'nota_semestre_2': float, 'faltas': int, 'nota_exame': float, 'monitoria': bool}
 list_keys_alunos = [str, int, str, float, float, int, float, bool]
 file_path_alunos = 'model/data/alunos.csv'
 
-#list_keys_cars = {'nome': str, 'carro': str, 'valor': float, 'cor': str, 'ano': int, 'cidade': str, 'pago': bool, 'tempo': str}
 list_keys_cars = [str, str, float, str, int, str, bool, str]
 file_path_cars = 'model/data/carros.txt'
 file_path_cars_save = 'model/data/carros_new.csv'
@@ -23,7 +21,7 @@ header, data = load.load_datafile_to_list_of_dicts(file_path_compras, list_keys_
 #print(data)
 
 '''#salvar lista de dicionários em um arquivo
-load.save_list_of_dicts_to_datafile(header, data, file_path_cars_save, data_separator)'''
+save.save_list_of_dicts_to_datafile(header, data, file_path_cars_save, data_separator)'''
 
 '''#Acesso por índice
 indexes = [1,2]

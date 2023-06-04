@@ -1,22 +1,4 @@
-#compara se o valor informado é None parta parâmetros na função for in range
-# -data: lista de dicionário de dados
-# -parameter: tipo do parâmetro verificado
-# -value: valor verificado
-def compare_none_value(data: list[dict], parameter: str, value: any):
-    '''
-    Compare if informed value is None and assign a value that permited slicing in data.\n\n
-    data\n list of data(dict): each data line of the file.\n
-    parameter\n a str that informed parameter of for in range function.\n
-    value\n value to compare: if None, change value to valid slicing value.
-    '''
-    if value == None: #verifica se o valor informado é igual a None
-        if parameter == 'start': #verifica se o parâmetro informado é 'start'
-            value = 0 #se valor é None e parâmetro for 'start', atribui valor zero
-        elif parameter == 'stop': #verifica se o parâmetro informado é 'stop'
-            value = len(data) #se valor é None e parâmetro for 'stop', atribui valor posição final da lista de dicionário de dados (slicing formato [start:])
-        elif parameter == 'step': #verifica se o parâmetro informado é 'step'
-            value = 1 #se valor é None e parâmetro for 'step', atribui valor 1 (slicing) (slicing formato [start:stop:] ou [start::])
-    return int(value)  #retorna valor para o parâmetro diferente de None
+from model.assistant.general_functions import compare_none_value_for_in_range, compare_values_whit_logical_operator
 
 #retorna registro conforme lista de índices repassado:
 # -data: lista de dicionário de dados
@@ -37,14 +19,14 @@ def locate_data_for_list_of_index(data: list[dict], list_index: list[list]):
             index = list_index[i] #lista de índice rece índice lido
             if (type(index)) == list: #verifica se o índice lido é do tipo lista
                 if(len(index) > 1): #verifica se tamanho da lista do índice lido é maior que 1
-                    start = compare_none_value(data, 'start', index[0]) #verifica se a primeira posição da lista lida é None
+                    start = compare_none_value_for_in_range(data, 'start', index[0]) #verifica se a primeira posição da lista lida é None
                     if(len(index) == 2): #verifica se tamanho da lista do índice lido é igual a 2: slicing do tipo [n:n]
-                        stop = compare_none_value(data, 'stop', index[1]) #verifica se a segunda posição da lista lida é None
+                        stop = compare_none_value_for_in_range(data, 'stop', index[1]) #verifica se a segunda posição da lista lida é None
                         for start in range (start, stop): #cria um laço entre o início da chave (start) até uma posição antes do final (stop): slicing onde a posição final não é inclusa
                             indexes_records_located.append(start) #adiciona posição (índice) na lista de índices iterando sobre o início
                     elif(len(index) == 3): #verifica se tamanho da lista do índice lido é igual a 3: slicing do tipo [n:n:n]
-                        stop = compare_none_value(data, 'stop', index[1]) #verifica se a segunda posição da lista lida é None
-                        step = compare_none_value(data, 'step', index[2]) #verifica se a terceira posição da lista lida é None
+                        stop = compare_none_value_for_in_range(data, 'stop', index[1]) #verifica se a segunda posição da lista lida é None
+                        step = compare_none_value_for_in_range(data, 'step', index[2]) #verifica se a terceira posição da lista lida é None
                         for start in range(start, stop, step): #cria um laço entre o início da chave (start) até uma posição antes do final (stop) consierando pulos (step): slicing onde a posição final não é inclusa considerando pulo informado
                             indexes_records_located.append(start) #adiciona posição (índice) na lista de índices iterando sobre o início
                     else: #caso hajam mais de três posições na lista lida
@@ -65,30 +47,6 @@ def locate_data_for_list_of_index(data: list[dict], list_index: list[list]):
         return [], [] #retorna duas listas (lista de índices dos dados localizados e lista de dados localizados) vazias pois não há dados para o índice informado
 
 
-#compara dois valores com um operador lógico (feita em aula)
-def compare_values(value1: str, logical_operator: str, value2: any):
-    """
-    Compare two values from logical operator informed.\n\n
-    value1 \n key(columm) of datafile. \n
-    logical_operator \n value do logical operator to compare.\n
-    value2 \n value of key(columm) desired.\n
-    return the operation whit value1 and value2 from the logical operator.
-    """
-    if logical_operator == '==':
-        return value1 == value2   
-    elif logical_operator == '>':
-        return value1 > value2   
-    elif logical_operator == '<':
-        return value1 < value2   
-    elif logical_operator == '!=':
-        return value1 != value2   
-    elif logical_operator == '>=':
-        return value1 >= value2   
-    elif logical_operator == '<=':
-        return value1 <= value2
-    return False
-
-
 #filtra dados considerando uma lista de dicionários contendo em dicionários dados de filtragem 
 # -data: lista de dicionário de dados
 # -rules: lista de regras para filtrar. Formato "rule" = {'key': str, 'logical_operator': str, 'value': any}
@@ -105,7 +63,7 @@ def filter_data(data: list[dict], rules: list[dict]):
         if(rules == None): #se a lista de regras for None
             return [] #para a busca e retorna uma lista vazia
         for index, rule in enumerate(rules): #lê cada regra da lista de regras criando um contador
-            if compare_values(line[rule['key']], rule['logical_operator'], (rule['value'])) == False: #verifica se a regra lida é valida
+            if compare_values_whit_logical_operator(line[rule['key']], rule['logical_operator'], (rule['value'])) == False: #verifica se a regra lida é valida
                 break #senão for uma regra válida, para a execução
             if index == (len(rules)-1): #verifica se ainda existe regras a serem validadas: até a última regra da lista de regras
                 found_data.append(line) #o registro se encaixa nas regras da lista de regras e é inserido na lista de dicionários de dados encontrados
@@ -158,7 +116,7 @@ def update_data_by_rule(data: list[dict], rules: list[dict], update_list: list[d
             modified_records += 1 #itera o contador de registros atualizados
         else: #caso existam regras informadas
             for index, rule in enumerate(rules): #lê a regra da lista de dcionários de regras com um contador
-                if compare_values(line[rule['key']], rule['logical_operator'], (rule['value'])) == False: #verifica se a regra lida é valida
+                if compare_values_whit_logical_operator(line[rule['key']], rule['logical_operator'], (rule['value'])) == False: #verifica se a regra lida é valida
                     break #senão for uma regra válida, para a execução
                 if index == (len(rules)-1): #verifica se ainda existe regras a serem validadas: até a última regra da lista de regras
                     for dict in update_list: #lê cada dicionário (chave e valor) da lista de dicionários de dados para atualização
