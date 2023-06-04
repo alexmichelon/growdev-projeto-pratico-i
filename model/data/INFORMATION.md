@@ -1,4 +1,4 @@
-* File Modes:
+*Open File Modes:
 'r' = Leitura
 'w' = Escrita. Substitui o conteúdo do arquivo existente
 'x' = Escrita. Retorna um erro caso o arquivo já exista
