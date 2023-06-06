@@ -1,0 +1,7 @@
+nome,carro,valor,cor,ano,cidade,pago,tempo
+Alex,Strada,50000.0,prata,2013,Sao Joaquim,0,Sol
+Deline,Fox,31000.0,branco,2013,Sao Joaquim,0,Sol
+Israel,Clio,30000.0,prata,2015,Sao Joaquim,0,Sol
+Iveraldo,Nivus,140000.0,laranja,2022,Lages,0,Chuva
+Jonas,Gol,25000.0,branco,2015,Sao Joaquim,1,Sol
+Glauco,Gol,32000.0,branco,2013,Rio do Sul,0,Enchente
