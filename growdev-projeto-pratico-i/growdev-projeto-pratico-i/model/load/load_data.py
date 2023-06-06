@@ -34,12 +34,17 @@ def load_datafile_to_list_of_dicts(file_path: str, list_type_keys: list[str], da
         record = d.split(data_separator)#retira cada separador de dados dos dados e atribui a linha lida no momento a uma lista (record)
         line = {} #cria e inicializa (vazia) o dicionário que vai receber a linha lida
         for index in range (len(list_type_keys)): #cria contador com base no tamanho da lista de tipos de dados (list_type_keys)
-            if(list_type_keys[index] == bool): #verifica se o tipo de dado da posição lida na lista de tipos de valores das colunas é lógico (bool)
-                if(record[index][0].upper() in ('T', 'V', '1') ): #verifica se o dado inicia por T (True), V (Verdadeiro) ou 1 (Verdadeiro): valores normalmente atribuidos a valores lógicos
-                    line.setdefault(header[index], True) #insere na linha lida chave (valor do cabeçalho) e valor verdadeiro (True)
-                else: #se não encontrar este tipo de caracter
-                    line.setdefault(header[index], False) #insere na linha lida chave (valor do cabeçalho) e valor falso (False)
-            else: #se o valor da chave da lista não for lógico (bool)  
-                line.setdefault(header[index], list_type_keys[index](record[index].replace('\n',''))) #insere na linha lida chave (valor do cabeçalho) e valor ao dicionário: caso tipo de dado for str, retira a quebra de linha
+            try:
+                if(list_type_keys[index] == bool): #verifica se o tipo de dado da posição lida na lista de tipos de valores das colunas é lógico (bool)
+                    if(record[index][0].upper() in ('T', 'V', '1') ): #verifica se o dado inicia por T (True), V (Verdadeiro) ou 1 (Verdadeiro): valores normalmente atribuidos a valores lógicos
+                        line.setdefault(header[index], True) #insere na linha lida chave (valor do cabeçalho) e valor verdadeiro (True)
+                    elif(record[index][0].upper() in ('F', '0') ): #verifica se o dado inicia por T , F (Falso) ou 1 (Falso): valores normalmente atribuidos a valores lógicos
+                        line.setdefault(header[index], False) #insere na linha lida chave (valor do cabeçalho) e valor falso (False)
+                    else: #senão for nem True ou False
+                        line.setdefault(header[index], None)  #insere nulo
+                else: #se o valor da chave da lista não for lógico (bool)  
+                    line.setdefault(header[index], list_type_keys[index](record[index].replace('\n',''))) #insere na linha lida chave (valor do cabeçalho) e valor ao dicionário: caso tipo de dado for str, retira a quebra de linha
+            except ValueError:
+                line.setdefault(header[index], None)            
         data.append(line) #adiciona o dicionário line (posições da linha lida) dentro da lista de dicionários
     return header, data #retorna cabeçalho e a lista de dados (cada linha dos dados é um dicionário na lista)
