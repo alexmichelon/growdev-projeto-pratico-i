@@ -1,6 +1,7 @@
 import model.load.load_data as load
 import model.processing.processing_data as processing
 import model.load.save_data as save
+import model.assistant.adjust_data as ad
 
 list_keys_compras = [str, str, int, str, float, int, str]
 file_path_compras = 'model/data/compras.csv'
@@ -8,8 +9,8 @@ file_path_compras = 'model/data/compras.csv'
 list_keys_alunos = [str, int, str, float, float, int, float, bool]
 file_path_alunos = 'model/data/alunos.csv'
 
-list_keys_cars = [str, str, float, str, int, str, bool, str]
-file_path_cars = 'model/data/carros.txt'
+list_keys_cars = [str, str, float, str, int, str, bool, str, float]
+file_path_cars = 'growdev-projeto-pratico-i/growdev-projeto-pratico-i/model/data/carros.txt'
 file_path_cars_save = 'model/data/carros_new.csv'
 
 data_separator = ','
@@ -17,7 +18,7 @@ data_separator = ','
 ######Testes#######
 
 #salvar dados d arquivo na lista de dicionários
-header, data = load.load_datafile_to_list_of_dicts(file_path_compras, list_keys_compras, data_separator)
+header, data = load.load_datafile_to_list_of_dicts(file_path_cars, list_keys_cars, data_separator)
 #print(data)
 
 '''#salvar lista de dicionários em um arquivo
@@ -77,3 +78,28 @@ type_of_test = 'Agrupamento'
 keys = 'cidade'
 result = processing.group_data_by_count(data, keys)
 print(f'{type_of_test}: \n {result}')'''
+
+
+'''type_of_test = 'Moda'
+result = ad.calculate_mode(data, 'pago')
+print(f'{type_of_test}: \n {result}')
+
+type_of_test = 'Média'
+result = ad.calculate_mean(data, 'dp')
+print(f'{type_of_test}: \n {result}')
+
+type_of_test = 'Mediana'
+result = ad.calculate_median(data, 'dp')
+print(f'{type_of_test}: \n {result}')
+
+type_of_test = 'Variancia'
+result = ad.calculate_standard_variance(data, 'dp')
+print(f'{type_of_test}: \n {result}')
+'''
+
+'''type_of_test = 'Desvio Padrão'
+result = ad.calculate_standard_deviation(data, 'dp')
+print(f'{type_of_test}: \n {result}')'''
+
+data = ad.remove_null_values(data, 'dp', 'standard_deviation')
+print(data)
